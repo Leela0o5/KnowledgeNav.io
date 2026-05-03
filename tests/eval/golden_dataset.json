@@ -1,0 +1,7 @@
+[
+  {
+    "question": "What is the refund policy for annual subscriptions?",
+    "ground_truth": "Annual subscriptions are eligible for a full refund within 30 days of purchase.",
+    "reference_chunks": ["chunk_example_001"]
+  }
+]

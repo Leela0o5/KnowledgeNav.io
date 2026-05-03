@@ -1,0 +1,38 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push API image
+        run: |
+          docker build -f Dockerfile.api -t ghcr.io/${{ github.repository_owner }}/knowledge-nav-api:${{ github.sha }} .
+          docker push ghcr.io/${{ github.repository_owner }}/knowledge-nav-api:${{ github.sha }}
+      - name: Build and push web image
+        run: |
+          docker build -f frontend/Dockerfile -t ghcr.io/${{ github.repository_owner }}/knowledge-nav-web:${{ github.sha }} frontend/
+          docker push ghcr.io/${{ github.repository_owner }}/knowledge-nav-web:${{ github.sha }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy API
+        run: kubectl set image deployment/knowledge-nav-api app=ghcr.io/${{ github.repository_owner }}/knowledge-nav-api:${{ github.sha }}
+      - name: Deploy web
+        run: kubectl set image deployment/knowledge-nav-web app=ghcr.io/${{ github.repository_owner }}/knowledge-nav-web:${{ github.sha }}
+      - name: Wait for API rollout
+        run: kubectl rollout status deployment/knowledge-nav-api
+      - name: Wait for web rollout
+        run: kubectl rollout status deployment/knowledge-nav-web

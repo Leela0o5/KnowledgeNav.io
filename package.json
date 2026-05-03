@@ -1,0 +1,13 @@
+{
+  "name": "knowledge-nav",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=frontend",
+    "build:web": "npm run build --workspace=frontend",
+    "type-check": "npm run type-check --workspace=frontend"
+  }
+}

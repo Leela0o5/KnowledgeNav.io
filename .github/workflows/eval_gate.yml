@@ -1,0 +1,62 @@
+name: Ragas Eval Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  ragas-eval:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: knowledge_nav
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+      chroma:
+        image: chromadb/chroma:latest
+        ports:
+          - 8000:8000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install uv
+      - run: uv pip install --system -e ".[dev,eval]"
+      - name: Ingest eval corpus
+        run: python scripts/ingest_corpus.py --input-dir tests/eval/corpus --corpus-id ci-eval
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/knowledge_nav
+          REDIS_URL: redis://localhost:6379/0
+          JWT_SECRET: ci-secret
+          GOOGLE_CLIENT_ID: ci
+          GOOGLE_CLIENT_SECRET: ci
+          GITHUB_CLIENT_ID: ci
+          GITHUB_CLIENT_SECRET: ci
+      - name: Run Ragas evaluation
+        run: python scripts/run_eval.py --dataset tests/eval/golden_dataset.json --corpus-id ci-eval --output-dir ./eval_reports --fail-on-threshold
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/knowledge_nav
+          REDIS_URL: redis://localhost:6379/0
+          JWT_SECRET: ci-secret
+          GOOGLE_CLIENT_ID: ci
+          GOOGLE_CLIENT_SECRET: ci
+          GITHUB_CLIENT_ID: ci
+          GITHUB_CLIENT_SECRET: ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ragas-eval-report
+          path: ./eval_reports/
+        if: always()
