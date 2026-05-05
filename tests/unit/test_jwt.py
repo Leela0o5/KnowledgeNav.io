@@ -1,6 +1,6 @@
 import pytest
 
-from knowledge_nav.auth.jwt import InvalidTokenError, issue_access_token, verify_access_token
+from auth.jwt import InvalidTokenError, issue_access_token, verify_access_token
 
 
 def test_issue_and_verify_access_token() -> None:
@@ -19,7 +19,7 @@ def test_verify_wrong_type_raises() -> None:
     import time
     from datetime import UTC, datetime, timedelta
     from jose import jwt
-    from knowledge_nav.config import settings
+    from src.config import settings
 
     payload = {
         "sub": "user-123",

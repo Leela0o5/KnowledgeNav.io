@@ -6,16 +6,16 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy.ext.asyncio import create_async_engine
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "backend" / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "backend"))
 
-from knowledge_nav.config import settings  # noqa: E402
+from src.config import settings  # noqa: E402
 
 config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-from knowledge_nav.auth.models import Base  # noqa: E402
-from knowledge_nav.sessions.models import Session, Message  # noqa: E402, F401
+from auth.models import Base  # noqa: E402
+from sessions.models import Session, Message  # noqa: E402, F401
 
 target_metadata = Base.metadata
 

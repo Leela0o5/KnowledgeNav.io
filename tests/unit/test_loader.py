@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from knowledge_nav.ingestion.loader import UnsupportedFileTypeError, load_document
+from ingestion.loader import UnsupportedFileTypeError, load_document
 
 
 def test_load_text_file() -> None:

@@ -5,9 +5,9 @@ from pathlib import Path
 
 import anthropic
 
-from knowledge_nav.config import settings
-from knowledge_nav.ingestion.indexer import load_bm25_retriever
-from knowledge_nav.retrieval.schema import ScoredChunk
+from src.config import settings
+from ingestion.indexer import load_bm25_retriever
+from retrieval.schema import ScoredChunk
 
 
 _GENERATION_PROMPT = """Given the following document excerpt, generate a question and ground truth answer pair that tests factual retrieval.

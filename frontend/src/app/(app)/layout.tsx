@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { SessionList } from "@/components/sidebar/SessionList";
+import { SidebarFooter } from "@/components/sidebar/SidebarFooter";
 
 export default async function AppLayout({
   children,
@@ -21,9 +22,7 @@ export default async function AppLayout({
         <div className="flex-1 overflow-y-auto">
           <SessionList />
         </div>
-        <div className="p-4 border-t border-gray-200 text-sm text-gray-500">
-          {user.email}
-        </div>
+        <SidebarFooter email={user.email} />
       </aside>
       <main className="flex-1 overflow-hidden">{children}</main>
     </div>

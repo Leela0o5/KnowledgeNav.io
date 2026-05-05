@@ -1,5 +1,5 @@
-from knowledge_nav.ingestion.chunker import ChunkingConfig, chunk_documents
-from knowledge_nav.ingestion.loader import Document
+from ingestion.chunker import ChunkingConfig, chunk_documents
+from ingestion.loader import Document
 
 
 def test_chunk_produces_chunks() -> None:

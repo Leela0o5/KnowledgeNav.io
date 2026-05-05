@@ -1,6 +1,6 @@
 import pytest
 
-from knowledge_nav.citation.enforcer import CitationEnforcer
+from citation.enforcer import CitationEnforcer
 
 
 @pytest.fixture

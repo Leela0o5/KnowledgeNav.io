@@ -1,3 +1,49 @@
-Annual subscriptions are eligible for a full refund within 30 days of purchase.
-Refunds are processed within 5 business days and credited to the original payment method.
-Monthly subscriptions can be cancelled at any time; no partial refunds are issued.
+﻿KnowledgeNav Documentation
+
+Introduction
+KnowledgeNav is an AI-powered document search and question-answering system. It allows users to upload documents and ask natural language questions, receiving answers with inline citations pointing to the source material.
+
+Architecture Overview
+The system is built on a Retrieval-Augmented Generation (RAG) pipeline. When a user asks a question, the system retrieves the most relevant chunks from the document corpus and passes them to a large language model (LLM) to generate a grounded answer.
+
+The main components are:
+- Ingestion: Documents are loaded, split into chunks, embedded using Cohere, and stored in ChromaDB (vector store) and a BM25 index.
+- Retrieval: Hybrid search combines BM25 (keyword-based) and vector (semantic) search, followed by Cohere reranking.
+- Generation: The LLM generates an answer using only the retrieved chunks, with mandatory inline citations in the format [SOURCE:chunk_id].
+- Citation Validation: A post-generation step verifies that every factual claim is cited. If coverage is below the threshold, the system retries with a stricter prompt.
+
+Supported File Formats
+KnowledgeNav can ingest the following file types: PDF, Markdown (.md), HTML, DOCX, and plain text (.txt).
+
+Authentication
+The system supports Google OAuth and GitHub OAuth for user login. JWT tokens are used for session management, with short-lived access tokens (15 minutes) and long-lived refresh tokens (30 days).
+
+API Endpoints
+- POST /api/sessions - Create a new chat session.
+- POST /api/sessions/{id}/messages - Send a message and receive an answer with citations.
+- GET /api/sessions/{id}/messages - Retrieve message history for a session.
+- POST /api/ingest - Upload and ingest a document into a corpus.
+- GET /healthz - Health check endpoint.
+
+Citation Format
+Answers include inline citations like [SOURCE:abc123] where abc123 is the chunk ID. Each citation links back to the original document, page range, and a short excerpt.
+
+Configuration
+All configuration is managed via environment variables. Key settings include:
+- GROQ_API_KEY: API key for the Groq LLM provider.
+- COHERE_API_KEY: API key for Cohere embeddings and reranking.
+- DATABASE_URL: PostgreSQL connection string.
+- REDIS_URL: Redis connection string for caching.
+- JWT_SECRET: Secret key for signing JWT tokens.
+
+Retrieval Settings
+- BM25_TOP_K: Number of results from BM25 search (default: 20).
+- VECTOR_TOP_K: Number of results from vector search (default: 20).
+- RRF_K: Reciprocal rank fusion constant (default: 60).
+- RERANK_TOP_N: Number of results after reranking (default: 5).
+
+Citation Coverage
+The minimum citation coverage threshold is 0.8 (80%). This means at least 80% of factual sentences in the answer must contain a citation. If the threshold is not met, the system retries up to 2 times with a stricter system prompt.
+
+Session Management
+Conversations are stored in PostgreSQL. Each session maintains the last 6 turns of conversation context, which is injected into the prompt to support follow-up questions.

@@ -1,7 +1,7 @@
 from rank_bm25 import BM25Okapi  # type: ignore[import-untyped]
 
-from knowledge_nav.retrieval.bm25_retriever import BM25Retriever, tokenize
-from knowledge_nav.retrieval.schema import Chunk
+from retrieval.bm25_retriever import BM25Retriever, tokenize
+from retrieval.schema import Chunk
 
 
 def _make_retriever() -> BM25Retriever:

@@ -3,9 +3,9 @@ from pathlib import Path
 
 import pytest
 
-from knowledge_nav.evaluation.dataset import load_golden_dataset
-from knowledge_nav.evaluation.pipeline import run_ragas_evaluation
-from knowledge_nav.config import settings
+from evaluation.dataset import load_golden_dataset
+from evaluation.pipeline import run_ragas_evaluation
+from src.config import settings
 
 
 @pytest.mark.skipif(

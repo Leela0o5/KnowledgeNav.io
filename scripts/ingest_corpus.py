@@ -4,11 +4,11 @@ from pathlib import Path
 
 import chromadb
 
-from knowledge_nav.config import settings
-from knowledge_nav.ingestion.chunker import ChunkingConfig
-from knowledge_nav.ingestion.embedder import build_embedder
-from knowledge_nav.ingestion.indexer import ingest_corpus
-from knowledge_nav.ingestion.loader import LOADER_REGISTRY
+from src.config import settings
+from ingestion.chunker import ChunkingConfig
+from ingestion.embedder import build_embedder
+from ingestion.indexer import ingest_corpus
+from ingestion.loader import LOADER_REGISTRY
 
 
 def _collect_input_paths(input_dir: Path) -> list[Path]:
@@ -31,7 +31,7 @@ async def main() -> None:
         print(f"No supported files found in {args.input_dir}")
         return
 
-    chroma_client = chromadb.AsyncHttpClient(host=settings.CHROMA_HOST, port=settings.CHROMA_PORT)
+    chroma_client = await chromadb.AsyncHttpClient(host=settings.CHROMA_HOST, port=settings.CHROMA_PORT)
     embedder = build_embedder()
 
     count = await ingest_corpus(

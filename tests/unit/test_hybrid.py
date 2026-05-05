@@ -1,5 +1,5 @@
-from knowledge_nav.retrieval.hybrid import reciprocal_rank_fusion
-from knowledge_nav.retrieval.schema import Chunk, ScoredChunk
+from retrieval.hybrid import reciprocal_rank_fusion
+from retrieval.schema import Chunk, ScoredChunk
 
 
 def _make_chunk(chunk_id: str) -> ScoredChunk:

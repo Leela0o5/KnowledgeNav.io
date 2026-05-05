@@ -3,8 +3,8 @@ import asyncio
 import sys
 from pathlib import Path
 
-from knowledge_nav.evaluation.dataset import load_golden_dataset
-from knowledge_nav.evaluation.pipeline import run_ragas_evaluation
+from evaluation.dataset import load_golden_dataset
+from evaluation.pipeline import run_ragas_evaluation
 
 
 async def main() -> int:

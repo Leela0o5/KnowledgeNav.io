@@ -38,10 +38,20 @@ dev = ["pytest", "pytest-cov", "pytest-asyncio", "ruff", "mypy", "respx", "httpx
 eval = ["ragas", "datasets", "pandas"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["backend/src/knowledge_nav"]
+packages = [
+    "backend/src",
+    "backend/agent",
+    "backend/api",
+    "backend/auth",
+    "backend/citation",
+    "backend/evaluation",
+    "backend/ingestion",
+    "backend/retrieval",
+    "backend/sessions",
+]
 
 [tool.ruff]
-src = ["backend/src"]
+src = ["backend"]
 target-version = "py311"
 
 [tool.ruff.lint]
@@ -51,12 +61,12 @@ ignore = []
 [tool.mypy]
 strict = true
 python_version = "3.11"
-mypy_path = "backend/src"
+mypy_path = "backend"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
 
 [tool.coverage.run]
-source = ["knowledge_nav"]
+source = ["src", "agent", "api", "auth", "citation", "evaluation", "ingestion", "retrieval", "sessions"]
 omit = ["*/migrations/*"]

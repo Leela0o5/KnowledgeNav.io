@@ -1,7 +1,7 @@
 import pytest
 from httpx import AsyncClient
 
-from knowledge_nav.api.main import app
+from api.main import app
 
 
 @pytest.mark.asyncio
