@@ -1,4 +1,5 @@
 from pathlib import Path
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -25,6 +26,15 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str
     REDIS_URL: str
+
+    @field_validator("DATABASE_URL")
+    @classmethod
+    def fix_database_url(cls, v: str) -> str:
+        if v.startswith("postgres://"):
+            return "postgresql+asyncpg://" + v[len("postgres://"):]
+        if v.startswith("postgresql://"):
+            return "postgresql+asyncpg://" + v[len("postgresql://"):]
+        return v
 
     JWT_SECRET: str
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
