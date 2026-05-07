@@ -8,9 +8,9 @@ VALID_IDS = {"chunk-1", "chunk-2", "chunk-3"}
 def test_valid_answer_passes() -> None:
     enforcer = CitationEnforcer(min_coverage=0.8)
     answer = (
-        "The sky is blue. [SOURCE:chunk-1] "
-        "Water is wet. [SOURCE:chunk-2] "
-        "Fire is hot. [SOURCE:chunk-3]"
+        "The sky is blue [SOURCE:chunk-1]. "
+        "Water is wet [SOURCE:chunk-2]. "
+        "Fire is hot [SOURCE:chunk-3]."
     )
     result = enforcer.validate(answer, VALID_IDS)
     assert result.is_valid

@@ -81,6 +81,14 @@ jobs:
       - run: alembic upgrade head
         env:
           DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/knowledge_nav
+          REDIS_URL: redis://localhost:6379/0
+          JWT_SECRET: test-secret-for-ci-only
+          GROQ_API_KEY: test-key
+          COHERE_API_KEY: test-key
+          GOOGLE_CLIENT_ID: test
+          GOOGLE_CLIENT_SECRET: test
+          GITHUB_CLIENT_ID: test
+          GITHUB_CLIENT_SECRET: test
       - run: pytest tests/integration -v
         env:
           DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/knowledge_nav

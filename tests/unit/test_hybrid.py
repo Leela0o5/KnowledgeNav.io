@@ -32,5 +32,7 @@ def test_rrf_one_empty_list() -> None:
 
 def test_rrf_prefers_top_ranked_in_both_lists() -> None:
     shared = _sc("top")
-    result = reciprocal_rank_fusion([shared, _sc("only-a")], [shared, _sc("only-b")], k=60)
+    result = reciprocal_rank_fusion(
+        [shared, _sc("only-a")], [shared, _sc("only-b")], k=60
+    )
     assert result[0].id == "top"

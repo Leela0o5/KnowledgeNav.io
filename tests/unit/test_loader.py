@@ -7,7 +7,9 @@ from ingestion.loader import UnsupportedFileTypeError, load_document
 
 
 def _write(suffix: str, content: str) -> Path:
-    tmp = tempfile.NamedTemporaryFile(suffix=suffix, mode="w", encoding="utf-8", delete=False)
+    tmp = tempfile.NamedTemporaryFile(
+        suffix=suffix, mode="w", encoding="utf-8", delete=False
+    )
     tmp.write(content)
     tmp.close()
     return Path(tmp.name)

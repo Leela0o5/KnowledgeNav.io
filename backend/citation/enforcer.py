@@ -33,7 +33,7 @@ class CitationEnforcer:
         sentences = _split_sentences(answer)
         factual = [s for s in sentences if _is_factual(s)]
         cited = [s for s in factual if CITATION_PATTERN.search(s)]
-        coverage = len(cited) / max(len(factual), 1)
+        coverage = len(cited) / len(factual) if factual else 1.0
         hallucinated = extract_citation_ids(answer) - valid_chunk_ids
         is_valid = coverage >= self._min_coverage and not hallucinated
         return CitationValidationResult(

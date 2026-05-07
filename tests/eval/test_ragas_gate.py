@@ -5,8 +5,6 @@ import pytest
 
 from evaluation.dataset import load_golden_dataset
 from evaluation.pipeline import run_ragas_evaluation
-from src.config import settings
-
 
 @pytest.mark.skipif(
     not Path("tests/eval/golden_dataset.json").exists(),
