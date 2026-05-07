@@ -66,6 +66,7 @@ mypy_path = "backend"
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+pythonpath = ["backend"]
 
 [tool.coverage.run]
 source = ["src", "agent", "api", "auth", "citation", "evaluation", "ingestion", "retrieval", "sessions"]

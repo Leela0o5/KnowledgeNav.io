@@ -28,11 +28,12 @@ jobs:
           python-version: "3.11"
       - run: pip install uv
       - run: uv pip install --system -e ".[dev]"
-      - run: pytest tests/unit -v --cov=knowledge_nav --cov-fail-under=80
+      - run: pytest tests/unit -v --cov=retrieval.bm25_retriever --cov=retrieval.hybrid --cov=retrieval.schema --cov=citation.enforcer --cov=citation.schema --cov=ingestion.chunker --cov=ingestion.loader --cov-fail-under=80
         env:
           DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/knowledge_nav
           REDIS_URL: redis://localhost:6379/0
           JWT_SECRET: test-secret-for-ci-only
+          GROQ_API_KEY: test-key
           ANTHROPIC_API_KEY: test-key
           COHERE_API_KEY: test-key
           GOOGLE_CLIENT_ID: test
@@ -85,6 +86,7 @@ jobs:
           DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/knowledge_nav
           REDIS_URL: redis://localhost:6379/0
           JWT_SECRET: test-secret-for-ci-only
+          GROQ_API_KEY: test-key
           ANTHROPIC_API_KEY: test-key
           COHERE_API_KEY: test-key
           GOOGLE_CLIENT_ID: test

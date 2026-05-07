@@ -2,39 +2,35 @@ from retrieval.hybrid import reciprocal_rank_fusion
 from retrieval.schema import Chunk, ScoredChunk
 
 
-def _make_chunk(chunk_id: str) -> ScoredChunk:
-    return ScoredChunk(
-        chunk=Chunk(
-            id=chunk_id,
-            text="sample text",
-            doc_id="doc1",
-            chunk_index=0,
-            source_file="file.txt",
-            page_range=None,
-            corpus_id="test",
-        ),
-        score=1.0,
+def _sc(id: str, score: float = 1.0) -> ScoredChunk:
+    chunk = Chunk(
+        id=id,
+        text="text",
+        doc_id="doc",
+        chunk_index=0,
+        source_file="f.txt",
+        page_range=None,
+        corpus_id="c",
     )
+    return ScoredChunk(chunk=chunk, score=score)
 
 
 def test_rrf_merges_lists() -> None:
-    a = [_make_chunk("c1"), _make_chunk("c2"), _make_chunk("c3")]
-    b = [_make_chunk("c3"), _make_chunk("c1"), _make_chunk("c4")]
-    result = reciprocal_rank_fusion(a, b, k=60)
-    ids = [r.id for r in result]
-    assert "c1" in ids
-    assert "c3" in ids
-    assert "c4" in ids
-    assert ids[0] in ("c1", "c3")
+    result = reciprocal_rank_fusion([_sc("x"), _sc("y")], [_sc("y"), _sc("z")], k=60)
+    assert {r.id for r in result} == {"x", "y", "z"}
 
 
 def test_rrf_empty_lists() -> None:
-    result = reciprocal_rank_fusion([], [], k=60)
-    assert result == []
+    assert reciprocal_rank_fusion([], [], k=60) == []
 
 
 def test_rrf_one_empty_list() -> None:
-    a = [_make_chunk("c1")]
-    result = reciprocal_rank_fusion(a, [], k=60)
-    assert len(result) == 1
-    assert result[0].id == "c1"
+    result = reciprocal_rank_fusion([_sc("a"), _sc("b")], [], k=60)
+    assert len(result) == 2
+    assert result[0].id == "a"
+
+
+def test_rrf_prefers_top_ranked_in_both_lists() -> None:
+    shared = _sc("top")
+    result = reciprocal_rank_fusion([shared, _sc("only-a")], [shared, _sc("only-b")], k=60)
+    assert result[0].id == "top"

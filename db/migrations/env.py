@@ -15,7 +15,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 from auth.models import Base  # noqa: E402
-from sessions.models import Session, Message  # noqa: E402, F401
+from sessions.models import Session, Message, CorpusOwnership  # noqa: E402, F401
 
 target_metadata = Base.metadata
 
