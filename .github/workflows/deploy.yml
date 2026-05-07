@@ -26,24 +26,3 @@ jobs:
         run: |
           docker build -f Dockerfile.api -t ghcr.io/${{ env.OWNER }}/knowledge-nav-api:${{ github.sha }} .
           docker push ghcr.io/${{ env.OWNER }}/knowledge-nav-api:${{ github.sha }}
-      - name: Build and push web image
-        run: |
-          docker build -f frontend/Dockerfile -t ghcr.io/${{ env.OWNER }}/knowledge-nav-web:${{ github.sha }} frontend/
-          docker push ghcr.io/${{ env.OWNER }}/knowledge-nav-web:${{ github.sha }}
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    env:
-      OWNER: ${{ github.repository_owner }}
-    steps:
-      - name: Lowercase owner
-        run: echo "OWNER=${OWNER,,}" >> $GITHUB_ENV
-      - name: Deploy API
-        run: kubectl set image deployment/knowledge-nav-api app=ghcr.io/${{ env.OWNER }}/knowledge-nav-api:${{ github.sha }}
-      - name: Deploy web
-        run: kubectl set image deployment/knowledge-nav-web app=ghcr.io/${{ env.OWNER }}/knowledge-nav-web:${{ github.sha }}
-      - name: Wait for API rollout
-        run: kubectl rollout status deployment/knowledge-nav-api
-      - name: Wait for web rollout
-        run: kubectl rollout status deployment/knowledge-nav-web

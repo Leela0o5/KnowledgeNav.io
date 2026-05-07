@@ -4,10 +4,10 @@ from redis.asyncio import Redis
 
 from src.config import settings
 
-_redis: Redis | None = None  # type: ignore[type-arg]
+_redis: Redis | None = None
 
 
-async def get_redis() -> AsyncGenerator[Redis, None]:  # type: ignore[type-arg]
+async def get_redis() -> AsyncGenerator[Redis, None]:
     global _redis
     if _redis is None:
         _redis = Redis.from_url(settings.REDIS_URL, decode_responses=True)

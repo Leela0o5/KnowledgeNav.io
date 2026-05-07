@@ -18,13 +18,12 @@ from src.redis_client import get_redis
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-_SECURE = settings.OAUTH_REDIRECT_BASE_URL.startswith("https")
-_AT_COOKIE = "__Secure-at" if _SECURE else "knav_at"
-_RT_COOKIE = "__Secure-rt" if _SECURE else "knav_rt"
+_AT_COOKIE = "__Secure-at"
+_RT_COOKIE = "__Secure-rt"
 _COOKIE_KWARGS = {
     "httponly": True,
-    "samesite": "lax",
-    "secure": _SECURE,
+    "samesite": "none",
+    "secure": True,
 }
 
 
