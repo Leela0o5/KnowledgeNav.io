@@ -18,7 +18,7 @@ _BATCH_SIZE = 64
 async def ingest_corpus(
     input_paths: list[Path],
     corpus_id: str,
-    chroma_client: chromadb.AsyncClient,
+    chroma_client: chromadb.AsyncClientAPI,
     embedder: Embedder,
     bm25_index_dir: Path,
     collection_prefix: str,
