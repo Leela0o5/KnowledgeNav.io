@@ -6,7 +6,10 @@ RUN pip install uv
 
 COPY pyproject.toml .
 COPY backend/ ./backend/
+COPY alembic.ini .
+COPY db/ ./db/
+COPY start.sh .
 
-RUN uv pip install --system -e ".[dev]"
+RUN uv pip install --system -e ".[dev]" && chmod +x start.sh
 
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["./start.sh"]
