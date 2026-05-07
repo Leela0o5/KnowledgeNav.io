@@ -1,33 +1,52 @@
-"use client";
+﻿import { X, MessageSquare } from 'lucide-react';
+import { motion } from 'motion/react';
+import { cn } from '../../lib/utils';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { Session } from "@/types";
-import { useDeleteSession } from "@/hooks/useSessions";
-
-interface Props {
-  session: Session;
+export interface SessionItemProps {
+  title: string;
+  date: string;
+  isActive: boolean;
+  onClick: () => void;
+  onDelete: () => void;
 }
 
-export function SessionItem({ session }: Props) {
-  const pathname = usePathname();
-  const deleteSession = useDeleteSession();
-  const isActive = pathname === `/chat/${session.id}`;
-
+export default function SessionItem({ title, date, isActive, onClick, onDelete }: SessionItemProps) {
   return (
     <div
-      className={`group flex items-center justify-between px-3 py-2 rounded text-sm ${
-        isActive ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:bg-gray-50"
-      }`}
+      className={cn(
+        'w-full group flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 relative cursor-pointer',
+        isActive ? 'bg-blue-500/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-slate-200',
+      )}
+      onClick={onClick}
     >
-      <Link href={`/chat/${session.id}`} className="flex-1 truncate">
-        {session.title ?? session.corpus_id}
-      </Link>
-      <button
-        onClick={() => deleteSession.mutate(session.id)}
-        className="hidden group-hover:block text-gray-400 hover:text-red-500 ml-1 text-xs"
+      {isActive && (
+        <motion.div
+          layoutId="activeIndicator"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full"
+        />
+      )}
+
+      <div
+        className={cn(
+          'shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
+          isActive ? 'bg-blue-500 text-white' : 'bg-slate-800 text-slate-500 group-hover:bg-slate-700',
+        )}
       >
-        x
+        <MessageSquare className="w-4 h-4" />
+      </div>
+
+      <div className="flex-1 text-left min-w-0">
+        <div className="font-semibold text-sm truncate pr-7">{title}</div>
+        <div className="text-[11px] text-slate-500 font-medium">{date}</div>
+      </div>
+
+      {/* Delete button — pure CSS hover, no framer-motion opacity override */}
+      <button
+        className="absolute right-2 p-1.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-red-500/20 hover:text-red-400 text-slate-500 transition-all duration-150"
+        onClick={(e) => { e.stopPropagation(); onDelete(); }}
+        title="Delete chat"
+      >
+        <X className="w-3.5 h-3.5" />
       </button>
     </div>
   );

@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #3b82f6; /* blue-500 */
+  --color-brand-dark: #080c18;
+  --color-brand-deep: #130b2e;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes slide-up {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  --animation-fade-in: fade-in 0.5s ease-out;
+  --animation-slide-up: slide-up 0.5s ease-out;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-[#080c18] text-slate-200;
+  }
+}
+
+/* Inline citation superscripts */
+sup.cite-ref {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  margin: 0 1px;
+  background-color: #eff6ff; /* blue-50 */
+  color: #2563eb;            /* blue-600 */
+  border: 1px solid #bfdbfe; /* blue-200 */
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  font-style: normal;
+  vertical-align: middle;
+  line-height: 1;
+  cursor: default;
+}
+
+/* Markdown prose styling for chat messages */
+.markdown-body ul > li {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.markdown-body ul > li::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #60a5fa; /* blue-400 */
+  margin-top: 0.6rem;
+  flex-shrink: 0;
+}
+
+.markdown-body ol > li {
+  padding-left: 0.25rem;
+}
+
+.markdown-body ol > li::marker {
+  color: #3b82f6; /* blue-500 */
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .dark-sidebar-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .grid-overlay {
+    background-image: radial-gradient(#3b82f6 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+  }
+
+  .indigo-glow {
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+  }
+}

@@ -2,11 +2,24 @@ import uuid
 from datetime import datetime
 from typing import Any
 
-from sqlalchemy import DateTime, ForeignKey, String, Text, Float, CheckConstraint
+from sqlalchemy import DateTime, ForeignKey, Index, String, Text, Float, CheckConstraint
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from auth.models import Base
+
+
+class CorpusOwnership(Base):
+    __tablename__ = "corpus_ownership"
+
+    corpus_id: Mapped[str] = mapped_column(Text, primary_key=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    name: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    __table_args__ = (Index("ix_corpus_ownership_user_id", "user_id"),)
 
 
 class Session(Base):
