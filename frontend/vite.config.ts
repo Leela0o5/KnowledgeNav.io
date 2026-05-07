@@ -12,6 +12,14 @@ export default defineConfig(() => {
       },
       dedupe: ['react', 'react-dom'],
     },
+    build: {
+      rollupOptions: {
+        onwarn(warning, warn) {
+          process.stderr.write(`\n>>> ROLLUP WARNING ${warning.code}: ${warning.message}\n`);
+          warn(warning);
+        },
+      },
+    },
     server: {
   
       hmr: process.env.DISABLE_HMR !== 'true',
