@@ -1,7 +1,5 @@
 # KnowledgeNav.io
-![Architecture Diagram](frontend/public/system.png)
 
-## Overview
 
 KnowledgeNav.io lets you upload documents (PDF, DOCX, TXT, HTML), ask questions in a chat interface, and receive answers that are strictly grounded in your documents — every factual claim is backed by a `[SOURCE]` citation that links to the exact chunk it came from. Hallucinations are detected and blocked before they reach the user.
 
